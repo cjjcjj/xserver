@@ -88,27 +88,30 @@ public class Weather {
 
 
     public Weather(String city){
-        JSONObject obj = WeatherUtils.getWeatherJson(city);
-        currentCity = city;
-        currentDate = "2222";
-        json2Weather(obj);
+        try {
+            JSONObject obj = WeatherUtils.getWeatherJson(city);
+            currentCity = city;
+            json2Weather(obj);
+        }catch (Exception e){e.printStackTrace();}
     }
     private void json2Weather(JSONObject obj){
-        this.currentDate = obj.getString("date");
-        JSONArray ret = (JSONArray) obj.get("results");
-        JSONObject ret2 = (JSONObject) ret.get(0);
-        pm25 = (String) ret2.get("pm25");
-        currentCity = (String) ret2.get("currentCity");
-        JSONArray weather_data = (JSONArray) ret2.get("weather_data");
-        for(int i=0; i<weather_data.size(); i++){
-            JSONObject jo = (JSONObject) weather_data.get(i);
-            DateWeather dwt = new DateWeather();
-            dwt.date = jo.get("date")+"";
-            dwt.weather = jo.get("weather")+"";
-            dwt.wind = jo.get("wind")+"";
-            dwt.temperature = jo.get("temperature")+"";
-            weatherData.add(dwt);
-        }
+        try {
+            currentDate = obj.getString("date");
+            JSONArray ret = (JSONArray) obj.get("results");
+            JSONObject ret2 = (JSONObject) ret.get(0);
+            pm25 = (String) ret2.get("pm25");
+            currentCity = (String) ret2.get("currentCity");
+            JSONArray weather_data = (JSONArray) ret2.get("weather_data");
+            for (int i = 0; i < weather_data.size(); i++) {
+                JSONObject jo = (JSONObject) weather_data.get(i);
+                DateWeather dwt = new DateWeather();
+                dwt.date = jo.get("date") + "";
+                dwt.weather = jo.get("weather") + "";
+                dwt.wind = jo.get("wind") + "";
+                dwt.temperature = jo.get("temperature") + "";
+                weatherData.add(dwt);
+            }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     public static void main(String[] args) {
